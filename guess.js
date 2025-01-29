@@ -1,3 +1,10 @@
+let playAgain = true; // Variable to control the game loop
+let randomNumber = generateRandomNumber(); // Generate the random number to be guessed
+let attempts = 0; // Initialize attempt counter
+let maxAttempts = 10; // Set maximum attempts to 10
+let playerGuess; // Variable to store the player's guess
+let score = 100; // Initialize score, starting at 100
+
 // Function to generate a random number between 1 and 100
 function generateRandomNumber() {
   return Math.floor(Math.random() * 100) + 1; // Generates a number from 1 to 100
@@ -24,6 +31,12 @@ function checkGuess(playerGuess, randomNumber) {
   }
 }
 
+function reset() {
+  attempts = 0; // Reset the attempts counter
+  score = 100; // Reset the score
+  randomNumber = generateRandomNumber(); // Generate a new random number
+}
+
 // Main game function to control the game flow
 function game() {
   // Display welcome message with alert before starting the game
@@ -31,21 +44,11 @@ function game() {
     "Welcome to GuessMaster!  😎 You are about to start the game. You will be asked to guess a number between 1 and 100. 🤔"
   );
   alert(
-    "Here is the rule 📜 \n  You have 10 attempts to guess the right number"
+    `Here is the rule 📜 \n  
+    1. You have 10 attempts to guess the right number \n 
+    2. Oh 😮 , You will get bonus points 🤩 based on how quickly you guess the correct number \n
+    3. I will be subtracting 10 points per attempts. Good luck! Mwahahaha 😈!  `
   );
-  alert(
-    "Oh 😮 , I almost forgot you will get bonus points 🤩 if you manage to guess the number with fewer attempts."
-  );
-  alert(
-    "Oh 😮 , I almost forgot I will be subtracting 10 points per attempts. Good luck! Mwahahaha 😈! "
-  );
-
-  let playAgain = true; // Variable to control the game loop
-  let randomNumber = generateRandomNumber(); // Generate the random number to be guessed
-  let attempts = 0; // Initialize attempt counter
-  let maxAttempts = 10; // Set maximum attempts to 10
-  let playerGuess; // Variable to store the player's guess
-  let score = 100; // Initialize score, starting at 100
 
   console.log(`Your starting score : ${score} `);
 
@@ -82,16 +85,16 @@ function game() {
       }
 
       console.log(`Your final score: ${score}`);
-      playAgain = confirm("Do you want to play again? (ok(yes) / cancle(no))");
-      attempts = 0; // Reset the attempts counter
-      score = 100; // Reset the score
-    } else if (attempts > maxAttempts) {
+      playAgain = confirm(
+        "Do you want to play again? (ok (yes) / cancel (no))"
+      );
+      reset();
+    } else if (attempts >= maxAttempts) {
       // If the player used all attempts and didn't guess correctly
       console.log(`You lost 😔! The correct number was: ${randomNumber}`);
       console.log(`Your final score: ${score}`);
-      playAgain = confirm("Do you want to play again? (ok(yes) / cancle(no))");
-      attempts = 0; // Reset the attempts counter
-      score = 100; // Reset the score
+      playAgain = confirm("Do you want to play again? (ok(yes) / cancel (no))");
+      reset();
     }
   }
 }
