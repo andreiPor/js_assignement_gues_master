@@ -20,7 +20,7 @@ function getPlayerGuess() {
   return guess;
 }
 
-// Function to check if the player's guess is too low, too high, or correct
+// Function to check if the player's guess is too low, too high, or correct high
 function checkGuess(playerGuess, randomNumber) {
   if (playerGuess < randomNumber) {
     return "Too low! Try again."; // The guess is too low
