@@ -1,45 +1,45 @@
-let playAgain = true; // Variable to control the game loop
-let randomNumber = generateRandomNumber(); // Generate the random number to be guessed
-let attempts = 0; // Initialize attempt counter
-let maxAttempts = 10; // Set maximum attempts to 10
-let playerGuess; // Variable to store the player's guess
-let score = 100; // Initialize score, starting at 100
+let playAgain = true;  
+let randomNumber = generateRandomNumber();  
+let attempts = 0;  
+let maxAttempts = 10;  
+let playerGuess;  
+let score = 100;  
 
-// Function to generate a random number between 1 and 100
+const emoji10 = "\u{1F51F}";  
+
+ 
 function generateRandomNumber() {
-  return Math.floor(Math.random() * 100) + 1; // Generates a number from 1 to 100
+  return Math.floor(Math.random() * 100) + 1;  
 }
 
-// Function to get the player's guess and validate it
-function getPlayerGuess() {
-  let guess = parseInt(prompt("Guess a number between 1 and 100:")); // Prompt the player for input
-  // Loop until a valid number is entered (between 1 and 100)
-  while (isNaN(guess) || guess < 1 || guess > 100) {
-    guess = parseInt(prompt("Please enter a valid number between 1 and 100:"));
+ 
+function roundEmoji(round) {
+  switch (round) {
+    case 0:
+      return "\u0031\uFE0F\u20E3";
+    case 1:
+      return "\u0032\uFE0F\u20E3";
+    case 2:
+      return "\u0033\uFE0F\u20E3";
+    case 3:
+      return "\u0034\uFE0F\u20E3";
+    case 4:
+      return "\u0035\uFE0F\u20E3";
+    case 5:
+      return "\u0036\uFE0F\u20E3";
+    case 6:
+      return "\u0037\uFE0F\u20E3";
+    case 7:
+      return "\u0038\uFE0F\u20E3";
+    case 8:
+      return "\u0039\uFE0F\u20E3";
+    case 9:
+      return emoji10;
   }
-  return guess;
 }
 
-// Function to check if the player's guess is too low, too high,
-function checkGuess(playerGuess, randomNumber) {
-  if (playerGuess < randomNumber) {
-    return "Too low! Try again."; // The guess is too low
-  } else if (playerGuess > randomNumber) {
-    return "Too high! Try again."; // The guess is too high
-  } else {
-    return "Correct! 🏆 You've guessed the number!"; // The guess is correct
-  }
-}
-
-function reset() {
-  attempts = 0; // Reset the attempts counter
-  score = 100; // Reset the score
-  randomNumber = generateRandomNumber(); // Generate a new random number
-}
-
-// Main game function to control the game flow
-function game() {
-  // Display welcome message with alert before starting the game
+function welcomeMessage() {
+   
   alert(
     "Welcome to GuessMaster!  😎 You are about to start the game. You will be asked to guess a number between 1 and 100. 🤔"
   );
@@ -50,47 +50,107 @@ function game() {
     3. I will be subtracting 10 points per attempts. Good luck! Mwahahaha 😈!  `
   );
 
+  alert(`You're starting score : ${score}  `);
+
   console.log(`Your starting score : ${score} `);
+}
 
-  // Loop for up to 10 attempts
+function goodByeMessage() {
+  console.log(`Thank you for playing 😀, Hope you had a lot of fun 🎉`);
+  console.log(`See you soon 👋`);
+  alert(`Thank you for playing 😀, Hope you had a lot of fun 🎉`);
+  alert(`See you soon 👋`);
+}
+
+ 
+function getPlayerGuess() {
+  let guess = "";
+  do {
+    guess = prompt(
+      `Attempt: ${roundEmoji(
+        attempts
+      )} / ${emoji10}  \nGuess a number between 1 and 100:`
+    );
+
+    if (guess === null) {
+      return guess;
+    }
+    guess = parseInt(guess.trim());
+  } while (isNaN(guess) || guess < 1 || guess > 100);
+  return guess;
+}
+
+ 
+function checkGuess(playerGuess, randomNumber) {
+  if (playerGuess < randomNumber) {
+    return "Too low! 👇 Try again.";  
+  } else if (playerGuess > randomNumber) {
+    return "Too high! ☝️ Try again.";  
+  } else {
+    return "Correct! 🏆 You've guessed the number!";  
+  }
+}
+
+function reset() {
+  attempts = 0;  
+  score = 100;  
+  randomNumber = generateRandomNumber();  
+}
+
+ 
+function game() {
+  welcomeMessage();
+   
   while (playAgain) {
-    playerGuess = getPlayerGuess(); // Get the player's guess
-    let result = checkGuess(playerGuess, randomNumber); // Check if the guess is correct
-    console.log(result); // Display the result of the guess
-    attempts++; // Increase the attempt counter
+    playerGuess = getPlayerGuess();  
+    if (playerGuess === null) {
+      alert("Sorry 😔 , I get it if you want to stop. ");
+      playAgain = false;
+      break;
+    }
+    let result = checkGuess(playerGuess, randomNumber);  
+    alert(result);
+    console.log(result);  
+    attempts++;  
 
-    // Decrease score as attempts increase
+     
     score -= 10;
 
-    // If the guess is correct, end the game
+     
     if (result === "Correct! 🏆 You've guessed the number!") {
+      alert(`You won in ${attempts} attempts!`);
+      alert(`Your score: ${score}`);
+
       console.log(`You won in ${attempts} attempts!`);
       console.log(`Your score: ${score}`);
-      // Adding bonus points based on the number of attempts
+       
       if (attempts <= 5) {
+        alert(
+          "Great job! You guessed in 5 attempts or less! Bonus points ⭐ of 5 awarded!"
+        );
         console.log(
           "Great job! You guessed in 5 attempts or less! Bonus points ⭐ of 5 awarded!"
         );
-        score += 5; // Bonus points for guessing in 5 attempts or less
-      } else if (attempts <= 10) {
-        console.log(
-          "Good job! You guessed in 10 attempts or less! Bonus points ⭐ of 3 awarded!"
+        score += 5;  
+      } else if (attempts < 10) {
+        alert(
+          "Good job! You guessed in less than 10 attempts ! Bonus points ⭐ of 3 awarded!"
         );
-        score += 3; // Bonus points for guessing in 10 attempts or less
-      } else {
         console.log(
-          "You guessed in more than 10 attempts. Bonus points ⭐ of 1 awarded."
+          "Good job! You guessed in less than 10 attempts ! Bonus points ⭐ of 3 awarded!"
         );
-        score += 1; // Small bonus if more than 10 attempts
+        score += 3;  
       }
-
+      alert(`Your final score: ${score}`);
       console.log(`Your final score: ${score}`);
       playAgain = confirm(
         "Do you want to play again? (ok (yes) / cancel (no))"
       );
       reset();
     } else if (attempts >= maxAttempts) {
-      // If the player used all attempts and didn't guess correctly
+       
+      alert(`You lost 😔! The correct number was: ${randomNumber}`);
+      alert(`Your final score: ${score}`);
       console.log(`You lost 😔! The correct number was: ${randomNumber}`);
       console.log(`Your final score: ${score}`);
       playAgain = confirm("Do you want to play again? (ok(yes) / cancel (no))");
@@ -99,7 +159,6 @@ function game() {
   }
 }
 
-// Start the game
+ 
 game();
-console.log(`Thank you for playing 😀, Hope you had a lot of fun 🎉`);
-console.log(`See you soon 👋`);
+goodByeMessage();
